@@ -1,0 +1,40 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "airbnb-base"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "rules": {
+    "security/detect-unsafe-regex": 2,
+    "security/detect-non-literal-regexp": 2,
+    "security/detect-non-literal-require": 2,
+    "security/detect-non-literal-fs-filename": 2,
+    "security/detect-eval-with-expression": 2,
+    "security/detect-pseudoRandomBytes": 2,
+    "security/detect-possible-timing-attacks": 2,
+    "security/detect-no-csrf-before-method-override": 2,
+    "security/detect-buffer-noassert": 2,
+    "security/detect-child-process": 2,
+    "security/detect-disable-mustache-escape": 2,
+    "security/detect-new-buffer": 2,
+    "no-dupe-keys": 2,
+    "array-bracket-spacing": 0,
+    "max-len": 0,
+    "strict": 0,
+    "no-useless-concat": 0,
+    "prefer-template": 0,
+    "no-param-reassign": 0,
+    "import/no-extraneous-dependencies": [ "error", { "devDependencies": true, "optionalDependencies": false, "peerDependencies": false }]
+  },
+  "env": {
+    "node": true,
+    "es6": true,
+    "mocha": true
+  },
+  "plugins": [
+    "security"
+  ]
+}

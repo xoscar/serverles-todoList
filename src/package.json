@@ -1,0 +1,17 @@
+{
+  "name": "src",
+  "version": "0.0.1",
+  "description": "Internal app with core process",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "dynamodb-marshaler": "^2.0.0",
+    "moment": "^2.18.1",
+    "uuid-v4": "^0.1.0"
+  }
+}
