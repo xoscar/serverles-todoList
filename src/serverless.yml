@@ -37,6 +37,14 @@ provider:
         Action:
           - "dynamodb:PutItem"
         Resource: "*"
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:Scan"
+        Resource: "*"
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:DeleteItem"
+        Resource: "*"
 
 functions:
   create:
@@ -45,6 +53,62 @@ functions:
       - http:
           path: items
           method: post
+          integration: lambda-proxy
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+
+  retrieve:
+    handler: handler.retrieve
+    events:
+      - http:
+          path: items
+          method: get
+          integration: lambda-proxy
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+
+  retrieveOne:
+    handler: handler.retrieveOne
+    events:
+      - http:
+          path: items/{id}
+          method: get
+          integration: lambda-proxy
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+
+  update:
+    handler: handler.update
+    events:
+      - http:
+          path: items/{id}
+          method: put
+          integration: lambda-proxy
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+
+  remove:
+    handler: handler.remove
+    events:
+      - http:
+          path: items/{id}
+          method: delete
           integration: lambda-proxy
           cors:
             origins:

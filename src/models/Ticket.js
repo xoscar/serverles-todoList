@@ -5,6 +5,13 @@ const moment = require('moment');
 // libs
 const dynamoManager = require('../utils/dynamoManager')(process.env.DYNAMODB_ITEMS_TABLE);
 
+// static values
+const typeConfig = {
+  checked: 'boolean',
+  description: 'regexp',
+  title: 'regexp',
+};
+
 const Ticket = ({ id, title, description, checked, createdAt }) => {
   const toggleCheck = () => {
     dynamoManager.putItem({
@@ -30,11 +37,27 @@ const Ticket = ({ id, title, description, checked, createdAt }) => {
   };
 };
 
+// internal function
 const getFromDynamo = dynamoObj => (
   Ticket(
     Object.assign({
       id: dynamoObj.id,
     }, dynamoObj.info))
+);
+
+Ticket.update = (id, newValues) => (
+  dynamoManager.retrieveOne(id)
+
+  .then(ticket => (
+    dynamoManager.putItem({
+      info: Object.assign(getFromDynamo(ticket).getInfo(), newValues),
+      id,
+    })
+  ))
+
+  .then(ticket => (
+    Promise.resolve(getFromDynamo(ticket))
+  ))
 );
 
 Ticket.create = ({ title, description, checked }) => {
@@ -53,14 +76,8 @@ Ticket.create = ({ title, description, checked }) => {
       },
     })
 
-    .then(() => (
-      Promise.resolve(Ticket({
-        id,
-        title,
-        description,
-        checked,
-        createdAt,
-      }))
+    .then(ticket => (
+      Promise.resolve(getFromDynamo(ticket))
     ));
 };
 
@@ -72,11 +89,13 @@ Ticket.retrieve = id => (
   ))
 );
 
-Ticket.retrieveAll = () => (
-  dynamoManager.retrieveAll()
+Ticket.retrieveAll = searchParams => (
+  dynamoManager.retrieveAll(searchParams, typeConfig)
 
-  .then(results => (
-    Promise.resolve(results.map(result => getFromDynamo(result)))
+  .then(searchResult => (
+    Promise.resolve(Object.assign(searchResult, {
+      results: searchResult.results.map(result => getFromDynamo(result)),
+    }))
   ))
 );
 

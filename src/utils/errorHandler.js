@@ -39,7 +39,7 @@ ErrorHandler.handle = (err) => {
       code: err.code,
     });
 
-    console.log('ERROR', genericObj.toString());
+    console.log('ERROR', genericObj.toString()); // eslint-disable-line
 
     return Promise.reject(genericObj);
   }
@@ -49,7 +49,7 @@ ErrorHandler.handle = (err) => {
     code: `ERROR: ${err}`,
   });
 
-  console.log('ERROR', unknownError.toString());
+  console.log('ERROR', unknownError.toString()); // eslint-disable-line
   return Promise.reject(unknownError);
 };
 
